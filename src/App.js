@@ -23,7 +23,6 @@ const Title = styled.h1`
 const Timer = styled.h2`
   font-size: 2em;
   color: white;
-  background: black;
   width: 15vw;
   margin: 2em auto;
   height: 8vh;
@@ -55,24 +54,23 @@ export default function App() {
 
   useEffect(() => {
     let interval = null;
-    if (isActive && minutes === 0) {
+    if (isActive && minutes > 0 && seconds > 0) {
       interval = setInterval(() => {
-        setSeconds(seconds => (seconds < 59) ? seconds + 1 : setSeconds(0))
-        setMinutes(minutes => (seconds % 59 === 0 && seconds !== 0) ? minutes + 1 : minutes)
+        setSeconds(seconds => seconds - 1)
       }, 1000);
+    } else if (isActive && minutes > 0 && seconds == 0){
+      interval = setInterval(() => {
+        setSeconds(59)
+        setMinutes(minutes => minutes - 1)
+      }, 1000);
+    } else if (isActive && minutes == 0 && seconds > 0){
+      interval = setInterval(() => {
+        setSeconds(seconds => seconds - 1)
+      }, 1000);  
+    } else if (isActive && minutes == 0 && seconds == 0){
+      setIsActive(false)
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval)
-    } else if (isActive && minutes > 0){
-      interval = setInterval(() => {
-        setSeconds(seconds => {
-          if (seconds === 0){
-            setSeconds(59)
-            setMinutes(minutes => (seconds === 0) ? minutes - 1 : minutes)
-          }else{
-            setSeconds(seconds - 1)
-          }
-        })
-      }, 1000);
     }
 
     return () => {
@@ -113,7 +111,13 @@ export default function App() {
           reset()
           setMinutes(5)
           setIsActive(true)
-        }}>5 Minutes</ClockButton>
+        }}>5 Minutes</ClockButton><br />
+        
+        <ClockButton onClick={() => { 
+          reset()
+          setMinutes(1)
+          setIsActive(true)
+        }}>1 Minute</ClockButton>
         
       </div>
     </Container>
