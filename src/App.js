@@ -5,7 +5,7 @@ import { timer } from './Components/timer'
 
 // Styled Components
 const Container = styled.div`
-  background: rgba(150,0,0,0.5);
+  background: #FFFFFF;
   height: 100vh;
   width: 100vw;
   margin: 0 auto;
@@ -22,7 +22,7 @@ const Title = styled.h1`
 
 const Timer = styled.h2`
   font-size: 2em;
-  color: white;
+  color: #000000;
   width: 15vw;
   margin: 2em auto;
   height: 8vh;
@@ -32,15 +32,17 @@ const Timer = styled.h2`
 `;
 
 const ClockButton = styled(Button)`
-  background: teal;
-  margin-top: 0.5em;
+  background: #FFFFFF;
+  border: 1px solid #000000;
+  color: #000000;
+  margin: 0.5em 0.5em 0 0.5em;
 `;
 
 export default function App() {
   
   const [seconds, setSeconds] = useState(0)
   const [isActive, setIsActive] = useState(false)
-  const [minutes, setMinutes] = useState(0)
+  const [minutes, setMinutes] = useState(5)
 
   function toggle(){
     setIsActive(!isActive)
@@ -48,7 +50,7 @@ export default function App() {
 
   function reset(){
     setSeconds(0)
-    setMinutes(0)
+    setMinutes(5)
     setIsActive(false)
   }
 
@@ -58,16 +60,16 @@ export default function App() {
       interval = setInterval(() => {
         setSeconds(seconds => seconds - 1)
       }, 1000);
-    } else if (isActive && minutes > 0 && seconds == 0){
+    } else if (isActive && minutes > 0 && seconds === 0){
       interval = setInterval(() => {
         setSeconds(59)
         setMinutes(minutes => minutes - 1)
       }, 1000);
-    } else if (isActive && minutes == 0 && seconds > 0){
+    } else if (isActive && minutes === 0 && seconds > 0){
       interval = setInterval(() => {
         setSeconds(seconds => seconds - 1)
       }, 1000);  
-    } else if (isActive && minutes == 0 && seconds == 0){
+    } else if (isActive && minutes === 0 && seconds === 0){
       setIsActive(false)
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval)
@@ -85,41 +87,41 @@ export default function App() {
      
       <Timer>{(minutes < 10) ? `0` + minutes : minutes}:{(seconds < 10) ? `0` + seconds : seconds}</Timer>
       
-      <div  style={{margin: `0 auto`, width: `30vw`}}>
-        <ClockButton onClick={() => { 
-          toggle()
-        }}>{isActive ? 'Pause' : 'Start'}</ClockButton>
-        <ClockButton onClick={() => { 
-          reset()
-        }}>Reset</ClockButton>
+     
+        <ClockButton onClick={toggle}>{isActive ? 'Pause' : 'Start'}</ClockButton>
+        <ClockButton onClick={reset}>Reset</ClockButton>
         <br />
         <br />
-        <br />
+
         <ClockButton onClick={() => {
           reset()
           setMinutes(25)
           setIsActive(true)
-        }}>25 Minutes</ClockButton><br />
+        }}>25</ClockButton>
 
         <ClockButton onClick={() => { 
           reset()
           setMinutes(10)
           setIsActive(true)
-        }}>10 Minutes</ClockButton><br />
+        }}>10</ClockButton>
 
         <ClockButton onClick={() => { 
           reset()
           setMinutes(5)
           setIsActive(true)
-        }}>5 Minutes</ClockButton><br />
+        }}>5</ClockButton>
         
         <ClockButton onClick={() => { 
           reset()
           setMinutes(1)
           setIsActive(true)
-        }}>1 Minute</ClockButton>
+        }}>1</ClockButton>
+
+        <br />
+        <br />
         
-      </div>
+          
+      
     </Container>
   )
 }
