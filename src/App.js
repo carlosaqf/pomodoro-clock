@@ -42,7 +42,7 @@ export default function App() {
   
   const [seconds, setSeconds] = useState(0)
   const [isActive, setIsActive] = useState(false)
-  const [minutes, setMinutes] = useState(5)
+  const [minutes, setMinutes] = useState(0)
 
   function toggle(){
     setIsActive(!isActive)
@@ -50,27 +50,37 @@ export default function App() {
 
   function reset(){
     setSeconds(0)
-    setMinutes(5)
+    setMinutes(0)
     setIsActive(false)
   }
 
   useEffect(() => {
     let interval = null;
+
+    // e.g. 01:59 --> 01:58
     if (isActive && minutes > 0 && seconds > 0) {
       interval = setInterval(() => {
         setSeconds(seconds => seconds - 1)
       }, 1000);
+
+    // e.g. 02:00 --> 01:59
     } else if (isActive && minutes > 0 && seconds === 0){
       interval = setInterval(() => {
         setSeconds(59)
         setMinutes(minutes => minutes - 1)
       }, 1000);
+
+    // e.g. 00:58 --> 00:57
     } else if (isActive && minutes === 0 && seconds > 0){
       interval = setInterval(() => {
         setSeconds(seconds => seconds - 1)
       }, 1000);  
+
+    // e.g. 00:00 --> Pause -> Start
     } else if (isActive && minutes === 0 && seconds === 0){
       setIsActive(false)
+
+    // e.g. Pause functionality
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval)
     }
