@@ -43,6 +43,19 @@ export default function App() {
   const [seconds, setSeconds] = useState(0)
   const [isActive, setIsActive] = useState(false)
   const [minutes, setMinutes] = useState(0)
+  const [defaultTime, setDefaultTime] = useState(0)
+
+  const handleChange = (e) => {
+    setDefaultTime(e.target.value)
+    console.log(e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setMinutes(defaultTime)
+    setDefaultTime(0)
+    
+  }
 
   function toggle(){
     setIsActive(!isActive)
@@ -129,6 +142,11 @@ export default function App() {
 
         <br />
         <br />
+
+        <form onSubmit={handleSubmit}>
+          <input type="text" onChange={handleChange} placeholder="Enter default time" />
+          <input type="submit" value="Update" />
+        </form>
         
           
       
