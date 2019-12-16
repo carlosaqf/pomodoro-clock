@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import React from 'react'
 
-
-
-export const timer = (seconds, minutes) => {
+const Timer = ({ seconds, minutes }) => {
     return (
     <div>
-      <h1>{minutes} : {seconds}</h1>
+      <h1>{(minutes < 10) ? `0` + minutes : minutes}:{(seconds < 10) ? `0` + seconds : seconds}</h1>
     </div>
   )
 }
+
+export default Timer
 
 
