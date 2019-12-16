@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button } from './Components/button'
-import { timer } from './Components/timer'
+import  Button from './Components/Button/Button'
+import Timer from './Components/Timer'
 
 // Styled Components
 const Container = styled.div`
@@ -10,33 +10,14 @@ const Container = styled.div`
   width: 100vw;
   margin: 0 auto;
   text-align: center;
-  
 `;
 
 const Title = styled.h1`
-  font-size: 3em;
+  font-size: 3rem;
   margin: 0 auto;
-  padding-top: 1em;
-
+  padding-top: 1rem;
 `;
 
-const Timer = styled.h2`
-  font-size: 2em;
-  color: #000000;
-  width: 15vw;
-  margin: 2em auto;
-  height: 8vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ClockButton = styled(Button)`
-  background: #FFFFFF;
-  border: 1px solid #000000;
-  color: #000000;
-  margin: 0.5em 0.5em 0 0.5em;
-`;
 
 export default function App() {
   
@@ -45,23 +26,25 @@ export default function App() {
   const [minutes, setMinutes] = useState(0)
   const [defaultTime, setDefaultTime] = useState(0)
 
-  const handleChange = (e) => {
-    setDefaultTime(e.target.value)
-    console.log(e.target.value)
+  const handleTimeChange = (e) => {
+    setDefaultTime(isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value))
+    console.log('This is the time',typeof(parseInt(e.target.value)))
   }
 
-  const handleSubmit = (e) => {
+  const updateDefaultTime = (e) => {
     e.preventDefault()
-    setMinutes(defaultTime)
+    if (defaultTime <= 60){
+      setMinutes(defaultTime)
+      setDefaultTime(0)
+    }
     setDefaultTime(0)
-    
   }
 
-  function toggle(){
+  const toggle = () => {
     setIsActive(!isActive)
   }
 
-  function reset(){
+  const reset = () => {
     setSeconds(0)
     setMinutes(0)
     setIsActive(false)
@@ -108,46 +91,70 @@ export default function App() {
     <Container>
       <Title>Pomodoro Clock</Title>
      
-      <Timer>{(minutes < 10) ? `0` + minutes : minutes}:{(seconds < 10) ? `0` + seconds : seconds}</Timer>
-      
-     
-        <ClockButton onClick={toggle}>{isActive ? 'Pause' : 'Start'}</ClockButton>
-        <ClockButton onClick={reset}>Reset</ClockButton>
-        <br />
-        <br />
+      <Timer
+        minutes={minutes}
+        seconds={seconds}
+      />
+    
+      <Button 
+        onClick={toggle}
+        text={isActive ? 'Pause' : 'Start'}
+      />
+      <Button 
+        onClick={reset}
+        text="Reset"
+      />
+      <br />
+      <br />
 
-        <ClockButton onClick={() => {
+      <Button
+        onClick={() => {
           reset()
           setMinutes(25)
           setIsActive(true)
-        }}>25</ClockButton>
-
-        <ClockButton onClick={() => { 
+        }}
+        text="25"
+      />
+      <Button
+        onClick={() => {
           reset()
           setMinutes(10)
           setIsActive(true)
-        }}>10</ClockButton>
-
-        <ClockButton onClick={() => { 
+        }}
+        text="10"
+      />
+      <Button
+        onClick={() => {
           reset()
           setMinutes(5)
           setIsActive(true)
-        }}>5</ClockButton>
-        
-        <ClockButton onClick={() => { 
+        }}
+        text="5"
+      />
+      <Button
+        onClick={() => {
           reset()
           setMinutes(1)
           setIsActive(true)
-        }}>1</ClockButton>
+        }}
+        text="1"
+      />
+    
+      <br />
+      <br />
 
-        <br />
-        <br />
-
-        <form onSubmit={handleSubmit}>
-          <input type="text" onChange={handleChange} placeholder="Enter default time" />
-          <input type="submit" value="Update" />
-        </form>
-        
+      <form onSubmit={updateDefaultTime}>
+        <input 
+          onChange={handleTimeChange} 
+          placeholder="Enter default time"
+          value={defaultTime === 0 ? '' : defaultTime}
+        />
+        <input
+          type="submit"
+          value="Update"
+        />
+      </form>
+      
           
       
     </Container>
