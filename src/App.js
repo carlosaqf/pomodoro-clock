@@ -34,6 +34,7 @@ export default function App() {
   const updateDefaultTime = (e) => {
     e.preventDefault()
     if (defaultTime <= 60){
+      reset()
       setMinutes(defaultTime)
       setDefaultTime(0)
     }
@@ -48,6 +49,12 @@ export default function App() {
     setSeconds(0)
     setMinutes(0)
     setIsActive(false)
+  }
+
+  const handleClick = (time) => () => {
+    reset()
+    setMinutes(time)
+    setIsActive(true)
   }
 
   useEffect(() => {
@@ -96,49 +103,15 @@ export default function App() {
         seconds={seconds}
       />
     
-      <Button 
-        onClick={toggle}
-        text={isActive ? 'Pause' : 'Start'}
-      />
-      <Button 
-        onClick={reset}
-        text="Reset"
-      />
+      <Button onClick={toggle} text={isActive ? 'Pause' : 'Start'} />
+      <Button onClick={reset} text="Reset" />
       <br />
       <br />
 
-      <Button
-        onClick={() => {
-          reset()
-          setMinutes(25)
-          setIsActive(true)
-        }}
-        text="25"
-      />
-      <Button
-        onClick={() => {
-          reset()
-          setMinutes(10)
-          setIsActive(true)
-        }}
-        text="10"
-      />
-      <Button
-        onClick={() => {
-          reset()
-          setMinutes(5)
-          setIsActive(true)
-        }}
-        text="5"
-      />
-      <Button
-        onClick={() => {
-          reset()
-          setMinutes(1)
-          setIsActive(true)
-        }}
-        text="1"
-      />
+      <Button onClick={handleClick(25)} text="25" />
+      <Button onClick={handleClick(10)} text="10" />
+      <Button onClick={handleClick(5)} text="5" />
+      {/* <Button onClick={handleClick(1)} text="1" /> */}
     
       <br />
       <br />
